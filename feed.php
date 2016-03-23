@@ -9,7 +9,7 @@ if (!empty($_GET['url'])) {
 	$url = filter_var($_GET['url'], FILTER_SANITIZE_URL);
 	if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 		die('ERROR: Not a valid URL');
-    } else {
+	} else {
 		$parse_url = parse_url($url);
 		$site = $parse_url['scheme'].'://'.$parse_url['host'];
 	}
@@ -37,11 +37,12 @@ if (!empty($_GET['url'])) {
 		"title" => array(),
 		"link" => array(),
 		"author" => array(),
-		"date" => array(),
 		"content" => array()
 	);
+	// Добавляем опциональное поле даты если есть что искать
+	if (!empty($date)) { $items["date"] = array(); }
 	$count_fields = count($items);
-	
+
 	$html_dom = str_get_html($html);
 	if ($html_dom) {
 		foreach($html_dom->find($title) as $element) 
@@ -57,11 +58,11 @@ if (!empty($_GET['url'])) {
 	}
 
 	// Вычисляем совпадает ли количество найденных элементов
-	$items_count = count($items['title']);
-	if ((count($items, COUNT_RECURSIVE) - $count_fields) / $items_count != $count_fields) {
+	$count_items = count($items['title']);
+	if ((count($items, COUNT_RECURSIVE) - $count_fields) / $count_items != $count_fields) {
 		$discrepancy = True;
 		if (!isset($_GET['parse'])) die('ERROR: The discrepancy between the number of items found');
-    } else {
+	} else {
 		$discrepancy = False;
 	}
 	// Заголовок сайта
@@ -77,7 +78,7 @@ if (!empty($_GET['url'])) {
 		echo '<description>Site feed "' . $site_title . '" through Site to RSS proxy by Nomadic</description>' . PHP_EOL;
 		echo '<link>' . $site . '</link>' . PHP_EOL;
 		echo '<lastBuildDate>' . date('r') . '</lastBuildDate>' . PHP_EOL;
-		for($i = 0; $i < $items_count; $i++) {
+		for($i = 0; $i < $count_items; $i++) {
 			echo '<item>' . PHP_EOL;
 			$title = preg_split("/\r\n|\n|\r/", $items['title'][$i], -1, PREG_SPLIT_NO_EMPTY);
 			echo '<title>' . $title[0] . '</title>' . PHP_EOL;
