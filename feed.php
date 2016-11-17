@@ -17,6 +17,7 @@ if (!empty($_GET['url'])) {
 	$link = strip_tags($_GET['link']);
 	$author = strip_tags($_GET['author']);
 	$date = strip_tags($_GET['date']);
+	$image = strip_tags($_GET['image']);
 	$content = strip_tags($_GET['content']);
 	$content_filters = $_GET['content_filters'];
 
@@ -41,19 +42,22 @@ if (!empty($_GET['url'])) {
 	);
 	// Добавляем опциональное поле даты если есть что искать
 	if (!empty($date)) { $items["date"] = array(); }
+	if (!empty($image)) { $items["image"] = array(); }
 	$count_fields = count($items);
 
 	$html_dom = str_get_html($html);
 	if ($html_dom) {
-		foreach($html_dom->find($title) as $element) 
+		foreach($html_dom->find($title) as $element)
 			$items['title'][] = trim(html_entity_decode($element->plaintext));
-		foreach($html_dom->find($link) as $element) 
+		foreach($html_dom->find($link) as $element)
 			$items['link'][] = filter_var($element->href, FILTER_SANITIZE_URL);
-		foreach($html_dom->find($author) as $element) 
+		foreach($html_dom->find($author) as $element)
 			$items['author'][] = trim(html_entity_decode($element->plaintext));
-		foreach($html_dom->find($date) as $element) 
+		foreach($html_dom->find($date) as $element)
 			$items['date'][] = trim(html_entity_decode($element->plaintext));
-		foreach($html_dom->find($content) as $element) 
+		foreach($html_dom->find($image) as $element)
+			$items['image'][] = filter_var($element->src, FILTER_SANITIZE_URL);
+		foreach($html_dom->find($content) as $element)
 			$items['content'][] = trim($element->innertext);
 	}
 
@@ -72,7 +76,7 @@ if (!empty($_GET['url'])) {
 	if (!isset($_GET['parse'])) {
 		header('Content-Type: text/xml; charset=utf-8');
 		echo'<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
-		echo '<rss version="2.0" xmlns:content="http://www.w3.org/2005/Atom">' . PHP_EOL;
+		echo '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">' . PHP_EOL;
 		echo '<channel>' . PHP_EOL;
 		echo '<title>Site feed - ' . $site_title . '</title>' . PHP_EOL;
 		echo '<description>Site feed "' . $site_title . '" through Site to RSS proxy by Nomadic</description>' . PHP_EOL;
@@ -83,7 +87,7 @@ if (!empty($_GET['url'])) {
 			$title = preg_split("/\r\n|\n|\r/", $items['title'][$i], -1, PREG_SPLIT_NO_EMPTY);
 			echo '<title>' . $title[0] . '</title>' . PHP_EOL;
 			echo '<author>' . preg_replace('/\s+/', ' ', $items['author'][$i]) . '</author>' . PHP_EOL;
-			if (!empty($items['date'][$i])) {		
+			if (!empty($items['date'][$i])) {
 				// Если нельзя преобразовать строку даты
 				if (!strtotime($items['date'][$i])) {
 					// Заменяем русские названия
@@ -97,6 +101,18 @@ if (!empty($_GET['url'])) {
 					$items['date'][$i] = str_ireplace("месяц", ' months ago', $items['date'][$i]);
 					$items['date'][$i] = str_ireplace("год", ' years ago', $items['date'][$i]);
 					$items['date'][$i] = str_ireplace("лет", ' years ago', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(янв\S*)/i", 'january', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(фев\S*)/i", 'february', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(мар\S*)/i", 'march', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(апр\S*)/i", 'april', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(май\S*)/i", 'may', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(июн\S*)/i", 'june', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(июл\S*)/i", 'july', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(авг\S*)/i", 'august', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(сен\S*)/i", 'september', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(окт\S*)/i", 'october', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(ноя\S*)/i", 'november', $items['date'][$i]);
+					$items['date'][$i] = preg_replace("/(дек\S*)/i", 'december', $items['date'][$i]);
 					// Удаляем лишние русские символы
 					$items['date'][$i] = preg_replace("![А-Я]!i", "", $items['date'][$i]);
 				}
@@ -104,8 +120,12 @@ if (!empty($_GET['url'])) {
 			}
 			// Заменяем относительные ссылки на абсолютные
 			$items['link'][$i] = preg_replace('/(^\/[^\s]+)/', $site.'$1', $items['link'][$i]);
+			$items['image'][$i] = preg_replace('/(^\/[^\s]+)/', $site.'$1', $items['image'][$i]);
 			echo '<guid isPermaLink="true">' . $items['link'][$i] . '</guid>' . PHP_EOL;
 			echo '<link>' . $items['link'][$i] . '</link>' . PHP_EOL;
+			if (!empty($items['image'][$i])) {
+				echo '<media:content url="' . $items['image'][$i] . '" medium="image" />' . PHP_EOL;
+			}
 			// Удаляем ненужные строки
 			$filters = preg_split("/\r\n|\n|\r/", $content_filters, -1, PREG_SPLIT_NO_EMPTY);
 			if (count($filters) > 0) {
@@ -188,6 +208,12 @@ if (!empty($_GET['url'])) {
 									</div>
 								</div>
 								<div class="form-group">
+									<label for="date" class="col-sm-3 control-label">Image:</label>
+									<div class="col-sm-4">
+										<input name="image" id="date" class="form-control" placeholder="Simple HTML DOM find string" <?php if (isset($_GET['image'])) {echo 'value="'.$image.'"';} ?> >
+									</div>
+								</div>
+								<div class="form-group">
 									<label for="content" class="col-sm-3 control-label">Content:</label>
 									<div class="col-sm-4">
 										<input name="content" id="content" class="form-control" placeholder="Simple HTML DOM find string" <?php if (isset($_GET['content'])) {echo 'value="'.$content.'"';} ?>  required>
@@ -207,7 +233,11 @@ if (!empty($_GET['url'])) {
 		</div> <!-- jumbotron -->
 		<?php
 		if ($discrepancy) echo '<div class="alert alert-danger" role="alert"><b>ERROR</b>: The discrepancy between the number of items found</div>';
-		if (isset($_GET['parse'])) var_dump($items);
+		if (isset($_GET['parse'])) {
+			echo "<pre>";
+			print_r($items);
+			echo "</pre>";
+		}
 		?>
 		<footer class="navbar">
 			<div style="text-align: center;"><p><a href="https://github.com/n0madic/site2rss">GitHub</a> &copy; Nomadic 2016</p></div>
