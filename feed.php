@@ -180,7 +180,7 @@ if (!empty($_GET['url'])) {
             </h1>
             <br/>
             <p>Enter required options and get RSS feed!</p>
-            <form id="tform" class="form-horizontal" role="form" action="feed.php" method="GET">
+            <form id="tform" class="form-horizontal" role="form" action="/" method="GET">
                 <div class="form-group">
                     <div class="input-group input-group-lg">
                         <span class="input-group-addon">Site</span>
@@ -275,7 +275,7 @@ if (!empty($_GET['url'])) {
     }
     ?>
     <footer class="navbar">
-        <div style="text-align: center;"><p><a href="https://github.com/n0madic/site2rss">GitHub</a> &copy; Nomadic 2016
+        <div style="text-align: center;"><p><a href="https://github.com/n0madic/site2rss">GitHub</a> &copy; Nomadic 2016-2017
             </p></div>
     </footer>
 </div>
