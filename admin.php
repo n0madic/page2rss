@@ -95,9 +95,14 @@ session_start();
                 <tbody>
                 <?php
                 if (!empty($json_file) && isset($_SESSION['u_login'])) {
+                    $memcache = new Memcache;
+                    $memcache->addServer('localhost', 11211);
                     foreach ($config_json as $hash => $config) {
                         if ($hash != 'password') {
-                            echo '<tr><td>' . $hash . '</td><td>';
+                            echo '<tr><td>' . $hash;
+                            $date = $memcache->get($hash . '-updated');
+                            if ($date != false) echo '<h6>Last updated: ' . $date . '</h6>';
+                            echo '</td><td>';
                             foreach ($config as $name => $value) {
                                 echo '<strong>' . $name . '</strong> : ' . htmlspecialchars($value) . '<br>';
                             }

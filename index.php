@@ -177,6 +177,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
     $site_title = $html_dom->find('title', 0)->plaintext;
     // Выдаем полученные данные ввиде RSS
     if (!$parse) {
+        $memcache->set($hash . '-updated', date(DATE_RFC822));
         header('Content-Type: text/xml; charset=utf-8');
         $xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
         $xml .= '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">' . PHP_EOL;
@@ -362,7 +363,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
                 </div>
             </form>
         </div>
-        <?php if (isset($config_md5)) echo 'MD5 hash of config: <a href="//' . $http_host . '/?edit='.$config_md5.'">' . $config_md5 . '</a>'; ?>
+        <?php if (isset($config_md5)) echo 'MD5 hash of config: <a href="//' . $http_host . '/?edit=' . $config_md5 . '">' . $config_md5 . '</a>'; ?>
     </div> <!-- jumbotron -->
     <?php
     if ($discrepancy) echo '<div class="alert alert-danger" role="alert"><b>ERROR</b>: The discrepancy between the number of items found</div>';
