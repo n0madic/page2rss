@@ -5,5 +5,5 @@ handlers:
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico
-- url: /
-  script: feed.php
+- url: /.*
+  script: index.php
