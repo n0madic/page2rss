@@ -5,5 +5,7 @@ handlers:
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico
+- url: /admin(\.php)?
+  script: admin.php
 - url: /.*
   script: index.php
