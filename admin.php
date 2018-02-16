@@ -7,7 +7,7 @@ session_start();
     <title>Site to RSS admin page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="keywords" content="Site, RSS, Atom, feed, converter, generator, agregator, convert to, convert, to">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
