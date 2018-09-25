@@ -183,7 +183,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
         $xml .= '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">' . PHP_EOL;
         $xml .= '<channel>' . PHP_EOL;
         $xml .= '<title>Site feed - ' . $site_title . '</title>' . PHP_EOL;
-        $xml .= '<description>Site feed "' . $site_title . '" through Site to RSS proxy by Nomadic</description>' . PHP_EOL;
+        $xml .= '<description>Site feed "' . $site_title . '" through Page to RSS proxy by Nomadic</description>' . PHP_EOL;
         $xml .= '<link>' . $site . '</link>' . PHP_EOL;
         $xml .= '<lastBuildDate>' . date('r') . '</lastBuildDate>' . PHP_EOL;
         for ($i = 0; $i < $count_items; $i++) {
@@ -264,7 +264,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Site to RSS converter</title>
+    <title>Page to RSS converter</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="keywords" content="Site, RSS, Atom, feed, converter, generator, agregator, convert to, convert, to">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -273,7 +273,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
 <div class="container">
     <div class="jumbotron vertical-center">
         <div class="container">
-            <h1>Site to RSS
+            <h1>Page to RSS
                 <small>converter</small>
             </h1>
             <br/>
@@ -281,7 +281,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
             <form id="tform" class="form-horizontal" role="form" action="/" method="GET">
                 <div class="form-group">
                     <div class="input-group input-group-lg">
-                        <span class="input-group-addon">Site</span>
+                        <span class="input-group-addon">Page</span>
                         <input type="url" id="url" name="url" class="form-control search-query"
                                placeholder="URL" <?php if (isset($config['url'])) {
                             echo 'value="' . $url . '"';
@@ -375,7 +375,7 @@ if (!empty($_GET['url']) || !empty($_GET['get']) || !empty($_GET['edit'])) {
     }
     ?>
     <footer class="navbar">
-        <div style="text-align: center;"><p><a href="https://github.com/n0madic/site2rss">GitHub</a> &copy; Nomadic
+        <div style="text-align: center;"><p><a href="https://github.com/n0madic/page2rss">GitHub</a> &copy; Nomadic
                 2016-2017
             </p></div>
     </footer>

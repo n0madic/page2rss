@@ -1,2 +1,2 @@
-# site2rss
-Site to RSS proxy
+# page2rss
+Page to RSS proxy

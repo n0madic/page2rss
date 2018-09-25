@@ -4,7 +4,7 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Site to RSS admin page</title>
+    <title>Page to RSS admin page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="keywords" content="Site, RSS, Atom, feed, converter, generator, agregator, convert to, convert, to">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -120,7 +120,7 @@ session_start();
         </div> <!-- panel-body -->
     </div> <!-- panel -->
     <footer class="navbar-bottom">
-        <div style="text-align: center;"><p><a href="https://github.com/n0madic/site2rss">GitHub</a> &copy; Nomadic
+        <div style="text-align: center;"><p><a href="https://github.com/n0madic/page2rss">GitHub</a> &copy; Nomadic
                 2016-2017
             </p></div>
     </footer>
